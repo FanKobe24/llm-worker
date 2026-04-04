@@ -44,6 +44,7 @@ async def shutdown(ctx: dict[str, Any]) -> None:
 
 
 class WorkerSettings:
+    logger.info(f"redis_dsn: {worker_config.get_redis_dsn()}")
     redis_settings = RedisSettings.from_dsn(worker_config.get_redis_dsn())
     functions = [llm_openai_chat]
     max_jobs = worker_config.MAX_JOBS
