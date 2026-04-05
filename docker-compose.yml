@@ -1,0 +1,11 @@
+# 仅启动 LLM Worker。Redis 由外部提供，在 .env / .env.local 中配置 REDIS_URL（及 REDIS_PASSWORD）。
+# 若 Redis 跑在宿主机上，可将 REDIS_URL 设为 redis://host.docker.internal:6379/0（Docker Desktop）。
+services:
+  llm-worker:
+    build: .
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+      - path: .env.local
+        required: false
