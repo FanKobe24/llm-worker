@@ -1,11 +1,19 @@
 # 仅启动 LLM Worker。Redis 由外部提供，在 .env / .env.local 中配置 REDIS_URL（及 REDIS_PASSWORD）。
 # 若 Redis 跑在宿主机上，可将 REDIS_URL 设为 redis://host.docker.internal:6379/0（Docker Desktop）。
+# 若 Redis 与 Worker 同属外部网络 docker-public：先 docker network create docker-public（若尚无），
+# 再把本服务 join 到该网络，REDIS_URL 填 Redis 容器在该网络上的名称或别名，例如 redis://redis:6379/0。
 services:
   llm-worker:
     build: .
     restart: unless-stopped
+    networks:
+      - docker-public
     env_file:
       - path: .env
         required: false
       - path: .env.local
         required: false
+
+networks:
+  docker-public:
+    external: true
